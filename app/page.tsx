@@ -450,7 +450,7 @@ const previousGallery = () => {
     setHeroMouse({ x, y });
   }}
   onMouseLeave={() => setHeroMouse({ x: 0, y: 0 })}
-  className="relative flex min-h-[90dvh] items-end overflow-hidden bg-black"
+  className="relative flex min-h-screen items-end overflow-hidden bg-black md:min-h-[92dvh]"
 >
   {/* IMAGEM DO HERO */}
   <div className="absolute inset-0">
@@ -766,7 +766,6 @@ const previousGallery = () => {
   </div>
 </section>
 
-      ```tsx
 {/* =====================================================
           03 — GALERIA
       ===================================================== */}
@@ -922,7 +921,6 @@ const previousGallery = () => {
 
     </div>
 
-
     {/* =====================================================
           CONTROLES
         ===================================================== */}
@@ -949,8 +947,6 @@ const previousGallery = () => {
         ))}
 
       </div>
-
-
       {/* NÚMERO + SETAS — SOMENTE DESKTOP */}
       <div className="hidden shrink-0 items-center gap-3 md:flex">
 
@@ -993,7 +989,6 @@ const previousGallery = () => {
 
   </div>
 </section>
-```
 
      {/* =====================================================
           04 — NORTH CLUB
