@@ -234,61 +234,82 @@ const reviews = [
   },
 ];
 
+// =====================================================
 // PÁGINA
 // =====================================================
 export default function Home() {
   const [selectedServices, setSelectedServices] = useState<string[]>([]);
   const [activeService, setActiveService] = useState(0);
+
   const toggleService = (serviceName: string) => {
-  setSelectedServices((current) =>
-    current.includes(serviceName)
-      ? current.filter((name) => name !== serviceName)
-      : [...current, serviceName]
-  );
-};
-const bookingMessage =
-  selectedServices.length === 0
-    ? "Olá! Gostaria de agendar um horário."
-    : selectedServices.length === 1
-      ? `Olá! Gostaria de agendar ${selectedServices[0].toLowerCase()}.`
-      : `Olá! Gostaria de agendar ${selectedServices
-          .slice(0, -1)
-          .map((name) => name.toLowerCase())
-          .join(", ")} e ${selectedServices[selectedServices.length - 1].toLowerCase()}.`;
-          const bookingUrl = `${whatsappUrl}?text=${encodeURIComponent(bookingMessage)}`;
+    setSelectedServices((current) =>
+      current.includes(serviceName)
+        ? current.filter((name) => name !== serviceName)
+        : [...current, serviceName]
+    );
+  };
+
+  const bookingMessage =
+    selectedServices.length === 0
+      ? "Olá! Gostaria de agendar um horário."
+      : selectedServices.length === 1
+        ? `Olá! Gostaria de agendar ${selectedServices[0].toLowerCase()}.`
+        : `Olá! Gostaria de agendar ${selectedServices
+            .slice(0, -1)
+            .map((name) => name.toLowerCase())
+            .join(", ")} e ${selectedServices[
+            selectedServices.length - 1
+          ].toLowerCase()}.`;
+
+  const bookingUrl = `${whatsappUrl}?text=${encodeURIComponent(
+    bookingMessage
+  )}`;
+
   const [currentGallery, setCurrentGallery] = useState(0);
   const [isFading, setIsFading] = useState(false);
 
   const [heroMouse, setHeroMouse] = useState({ x: 0, y: 0 });
-const [showScrollTop, setShowScrollTop] = useState(false);
+  const [showScrollTop, setShowScrollTop] = useState(false);
 
-useEffect(() => {
-  const handleScroll = () => {
-    setShowScrollTop(window.scrollY > 20);
+  // =====================================================
+  // CONTROLE DA SETA DE ROLAGEM
+  // Aparece enquanto a página está sendo rolada
+  // e desaparece quando a rolagem para.
+  // =====================================================
+  useEffect(() => {
+    let scrollTimeout: ReturnType<typeof setTimeout>;
+
+    const handleScroll = () => {
+      setShowScrollTop(true);
+
+      clearTimeout(scrollTimeout);
+
+      scrollTimeout = setTimeout(() => {
+        setShowScrollTop(false);
+      }, 700);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      clearTimeout(scrollTimeout);
+    };
+  }, []);
+
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
   };
 
-  window.addEventListener("scroll", handleScroll);
-
-  handleScroll();
-
-  return () => {
-    window.removeEventListener("scroll", handleScroll);
+  const scrollToNext = () => {
+    window.scrollTo({
+      top: window.innerHeight,
+      behavior: "smooth",
+    });
   };
-}, []);
-
-const scrollToTop = () => {
-  window.scrollTo({
-    top: 0,
-    behavior: "smooth",
-  });
-};
-
-const scrollToNext = () => {
-  window.scrollTo({
-    top: window.innerHeight,
-    behavior: "smooth",
-  });
-};
 
  // =====================================================
 // GALERIA AUTOMÁTICA
@@ -416,8 +437,8 @@ const previousGallery = () => {
       </header>
 
       {/* =====================================================
-          HERO
-      ===================================================== */}
+    HERO
+===================================================== */}
 
 <section
   onMouseMove={(e) => {
@@ -429,7 +450,7 @@ const previousGallery = () => {
     setHeroMouse({ x, y });
   }}
   onMouseLeave={() => setHeroMouse({ x: 0, y: 0 })}
-  className="relative flex min-h-[92vh] items-end overflow-hidden bg-black md:min-h-screen"
+  className="relative flex min-h-[90dvh] items-end overflow-hidden bg-black"
 >
   {/* IMAGEM DO HERO */}
   <div className="absolute inset-0">
@@ -486,7 +507,7 @@ const previousGallery = () => {
           className="hero-button mt-6 inline-flex w-fit items-center gap-3 bg-[#dc2626] px-6 py-4 text-[10px] font-bold uppercase tracking-[0.2em] text-white"
         >
           Agendar horário
-          <span>↗</span>
+          <span></span>
         </a>
 
       </div>
@@ -497,35 +518,27 @@ const previousGallery = () => {
 </section>
 {/* NAVEGAÇÃO DE SCROLL */}
 <div
-  className="
-    fixed -right-4 z-50
-    bottom-[96px]
+  className={`
+    fixed right-3 bottom-[5.5rem] z-50
+    transition-all duration-300
+    ${
+      showScrollTop
+        ? "translate-y-0 opacity-100"
+        : "pointer-events-none translate-y-2 opacity-0"
+    }
     md:right-6 md:bottom-8
-  "
+  `}
 >
-  {showScrollTop ? (
-    <button
-      type="button"
-      onClick={scrollToTop}
-      aria-label="Voltar ao topo"
-      className="group flex h-12 w-12 items-center justify-center text-[#dc2626]"
-    >
-      <span className="text-3xl font-light leading-none transition-transform duration-300 group-hover:-translate-y-1">
-        ↑
-      </span>
-    </button>
-  ) : (
-    <button
-      type="button"
-      onClick={scrollToNext}
-      aria-label="Descer a página"
-      className="group flex h-12 w-12 items-center justify-center text-[#dc2626]"
-    >
-      <span className="text-3xl font-light leading-none transition-transform duration-300 group-hover:translate-y-1">
-        ↓
-      </span>
-    </button>
-  )}
+  <button
+    type="button"
+    onClick={scrollToTop}
+    aria-label="Voltar ao topo"
+    className="flex h-12 w-12 items-center justify-center text-[#dc2626]"
+  >
+    <span className="text-3xl font-light leading-none">
+      ↑
+    </span>
+  </button>
 </div>
       {/* =====================================================
     01 — A NORTH
@@ -744,7 +757,7 @@ const previousGallery = () => {
     Agendar pelo WhatsApp
 
     <span className="text-[#dc2626] transition-transform duration-300 group-hover:translate-x-1">
-      ↗
+      
     </span>
   </a>
 
@@ -753,7 +766,8 @@ const previousGallery = () => {
   </div>
 </section>
 
-      {/* =====================================================
+      ```tsx
+{/* =====================================================
           03 — GALERIA
       ===================================================== */}
 
@@ -784,127 +798,148 @@ const previousGallery = () => {
 
     </div>
 
-    {/* CARROSSEL */}
-<div className="relative overflow-hidden">
+    {/* =====================================================
+          MOBILE — GALERIA COM DESLIZE
+        ===================================================== */}
 
-  {/* MOBILE — 1 FOTO POR VEZ */}
-  <div className="md:hidden">
-
-    <div className="relative aspect-[4/3] overflow-hidden bg-black">
-
-      <Image
-  key={`${gallery[currentGallery].image}-${gallery[currentGallery].number}`}
-  src={gallery[currentGallery].image}
-  alt={gallery[currentGallery].title}
-  fill
-  sizes="100vw"
-  unoptimized
-  className={`transition-opacity duration-700 ease-in-out ${
-  isFading ? "opacity-0" : "opacity-100"
-} ${
-  gallery[currentGallery].fit === "contain"
-    ? "object-contain"
-    : "object-cover"
-}`}
-  style={{
-    objectPosition: gallery[currentGallery].position || "center",
-  }}
-/>
-
-      <div className="absolute inset-0 bg-black/10" />
-
-      <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent p-5 pt-20">
-
-        <p className="text-[9px] font-bold uppercase tracking-[0.2em] text-white/50">
-          {gallery[currentGallery].number}
-        </p>
-
-        <h3 className="mt-1 text-xl font-black uppercase tracking-[-0.03em] text-white">
-          {gallery[currentGallery].title}
-        </h3>
-
-      </div>
-
-    </div>
-
-  </div>
-
-
-  {/* DESKTOP — 4 FOTOS POR VEZ */}
-  <div className="hidden gap-3 md:grid md:grid-cols-4">
-
-    {[0, 1, 2, 3].map((offset) => {
-
-      const item =
-        gallery[(currentGallery + offset) % gallery.length];
-
-      return (
-        <button
-          key={`${item.number}-${currentGallery}-${offset}`}
-          onClick={() => {
-            setCurrentGallery(
-              (currentGallery + offset) % gallery.length
-            );
-          }}
-          aria-label={`Ver ${item.title}`}
-          className="group relative overflow-hidden bg-black text-left"
-        >
-
-          <div className="relative aspect-[4/3] overflow-hidden">
-
-           <Image
-  src={item.image}
-  alt={item.title}
-  fill
-  sizes="25vw"
-  unoptimized
-  className={`transition duration-700 group-hover:scale-105 ${
-    item.fit === "contain"
-      ? "object-contain"
-      : "object-cover"
-  }`}
-  style={{
-    objectPosition: item.position || "center",
-  }}
-/>
-
-            <div className="absolute inset-0 bg-black/10 transition group-hover:bg-black/30" />
-
-            <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent p-4 pt-14">
-
-              <p className="text-[9px] font-bold uppercase tracking-[0.2em] text-white/50">
-                {item.number}
-              </p>
-
-              <h3 className="mt-1 text-sm font-black uppercase tracking-[-0.02em] text-white md:text-base">
-                {item.title}
-              </h3>
-
-            </div>
-
-          </div>
-
-        </button>
-      );
-
-    })}
-
-  </div>
-
-</div>
-
-    {/* CONTROLES */}
-    <div className="mt-6 flex items-center justify-between gap-4">
-
-      <div className="flex items-center gap-2">
+    <div className="md:hidden -mx-5 overflow-x-auto px-5 pb-2 snap-x snap-mandatory scrollbar-hide">
+      <div className="flex gap-3">
 
         {gallery.map((item, index) => (
 
           <button
             key={item.number}
+            type="button"
+            onClick={() => setCurrentGallery(index)}
+            aria-label={`Ver ${item.title}`}
+            className="relative w-[calc(100vw-40px)] shrink-0 snap-center overflow-hidden bg-black text-left"
+          >
+
+            <div className="relative aspect-[4/3] overflow-hidden">
+
+              <Image
+                src={item.image}
+                alt={item.title}
+                fill
+                sizes="90vw"
+                unoptimized
+                className={`transition duration-700 ${
+                  item.fit === "contain"
+                    ? "object-contain"
+                    : "object-cover"
+                }`}
+                style={{
+                  objectPosition: item.position || "center",
+                }}
+              />
+
+              <div className="absolute inset-0 bg-black/10" />
+
+              <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent p-5 pt-20">
+
+                <p className="text-[9px] font-bold uppercase tracking-[0.2em] text-white/50">
+                  {item.number}
+                </p>
+
+                <h3 className="mt-1 text-xl font-black uppercase tracking-[-0.03em] text-white">
+                  {item.title}
+                </h3>
+
+              </div>
+
+            </div>
+
+          </button>
+
+        ))}
+
+      </div>
+    </div>
+
+
+    {/* =====================================================
+          DESKTOP — 4 FOTOS POR VEZ
+        ===================================================== */}
+
+    <div className="hidden gap-3 md:grid md:grid-cols-4">
+
+      {[0, 1, 2, 3].map((offset) => {
+
+        const item =
+          gallery[(currentGallery + offset) % gallery.length];
+
+        return (
+          <button
+            key={`${item.number}-${currentGallery}-${offset}`}
+            type="button"
+            onClick={() => {
+              setCurrentGallery(
+                (currentGallery + offset) % gallery.length
+              );
+            }}
+            aria-label={`Ver ${item.title}`}
+            className="group relative overflow-hidden bg-black text-left"
+          >
+
+            <div className="relative aspect-[4/3] overflow-hidden">
+
+              <Image
+                src={item.image}
+                alt={item.title}
+                fill
+                sizes="25vw"
+                unoptimized
+                className={`transition duration-700 group-hover:scale-105 ${
+                  item.fit === "contain"
+                    ? "object-contain"
+                    : "object-cover"
+                }`}
+                style={{
+                  objectPosition: item.position || "center",
+                }}
+              />
+
+              <div className="absolute inset-0 bg-black/10 transition group-hover:bg-black/30" />
+
+              <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent p-4 pt-14">
+
+                <p className="text-[9px] font-bold uppercase tracking-[0.2em] text-white/50">
+                  {item.number}
+                </p>
+
+                <h3 className="mt-1 text-sm font-black uppercase tracking-[-0.02em] text-white md:text-base">
+                  {item.title}
+                </h3>
+
+              </div>
+
+            </div>
+
+          </button>
+        );
+
+      })}
+
+    </div>
+
+
+    {/* =====================================================
+          CONTROLES
+        ===================================================== */}
+
+    <div className="mt-6 flex items-center justify-between gap-4">
+
+      {/* INDICADORES */}
+      <div className="flex min-w-0 flex-1 items-center gap-2 overflow-x-auto scrollbar-hide">
+
+        {gallery.map((item, index) => (
+
+          <button
+            key={item.number}
+            type="button"
             onClick={() => setCurrentGallery(index)}
             aria-label={`Ir para imagem ${index + 1}`}
-            className={`h-[3px] transition-all duration-300 ${
+            className={`h-[3px] shrink-0 transition-all duration-300 ${
               index === currentGallery
                 ? "w-8 bg-[#dc2626]"
                 : "w-3 bg-white/25 hover:bg-white/60"
@@ -915,14 +950,17 @@ const previousGallery = () => {
 
       </div>
 
-      <div className="flex items-center gap-3">
 
-        <span className="hidden text-[10px] font-bold tracking-[0.2em] text-white/40 sm:block">
+      {/* NÚMERO + SETAS — SOMENTE DESKTOP */}
+      <div className="hidden shrink-0 items-center gap-3 md:flex">
+
+        <span className="text-[10px] font-bold tracking-[0.2em] text-white/40">
           {String(currentGallery + 1).padStart(2, "0")} /{" "}
           {String(gallery.length).padStart(2, "0")}
         </span>
 
         <button
+          type="button"
           onClick={previousGallery}
           aria-label="Imagem anterior"
           className="flex h-10 w-10 items-center justify-center border border-white/25 text-lg transition hover:border-white hover:bg-white hover:text-black"
@@ -931,6 +969,7 @@ const previousGallery = () => {
         </button>
 
         <button
+          type="button"
           onClick={nextGallery}
           aria-label="Próxima imagem"
           className="flex h-10 w-10 items-center justify-center border border-white/25 text-lg transition hover:border-white hover:bg-white hover:text-black"
@@ -941,6 +980,7 @@ const previousGallery = () => {
       </div>
 
     </div>
+
 
     {/* DESCRIÇÃO */}
     <div className="mt-8 grid gap-6 border-t border-white/10 pt-6 md:grid-cols-[1fr_auto] md:items-end">
@@ -953,6 +993,7 @@ const previousGallery = () => {
 
   </div>
 </section>
+```
 
      {/* =====================================================
           04 — NORTH CLUB
@@ -1254,7 +1295,7 @@ const previousGallery = () => {
       rel="noopener noreferrer"
       className="inline-flex w-fit border border-white/25 px-6 py-3.5 text-[10px] font-bold uppercase tracking-[0.2em] transition-colors hover:bg-white hover:text-black"
     >
-      @northbarberclub ↗
+      @northbarberclub 
     </a>
 
   </div>
@@ -1337,7 +1378,7 @@ const previousGallery = () => {
             rel="noopener noreferrer"
             className="inline-flex border border-black/20 px-6 py-3.5 text-[10px] font-bold uppercase tracking-[0.2em] text-black transition-colors hover:bg-black hover:text-white"
           >
-            Abrir no Maps ↗
+            Abrir no Maps 
           </a>
 
         </div>
@@ -1404,7 +1445,7 @@ const previousGallery = () => {
         rel="noopener noreferrer"
         className="inline-flex w-fit shrink-0 bg-white px-7 py-4 text-[10px] font-bold uppercase tracking-[0.2em] text-black transition-transform hover:scale-[1.02]"
       >
-        Agendar agora ↗
+        Agendar agora 
       </a>
 
     </div>
@@ -1532,22 +1573,22 @@ const previousGallery = () => {
       ===================================================== */}
 
       <a
-        href={whatsappAgendamentoUrl}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="fixed bottom-4 left-4 right-4 z-50 flex items-center justify-center gap-3 bg-[#dc2626] px-5 py-4 text-[10px] font-black uppercase tracking-[0.2em] text-white shadow-2xl md:hidden"
-      >
-        <span className="text-base">
-          ◉
-        </span>
-
-        Agendar pelo WhatsApp
-
-        <span>
-          ↗
-        </span>
-
-                  </a>
+  href={whatsappAgendamentoUrl}
+  target="_blank"
+  rel="noopener noreferrer"
+  aria-label="Agendar pelo WhatsApp"
+  className="fixed bottom-5 right-2 z-50 flex h-12 w-12 items-center justify-center rounded-full bg-[#dc2626] text-white shadow-2xl transition-transform hover:scale-105 md:hidden"
+>
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 24 24"
+    fill="currentColor"
+    className="h-6 w-6"
+    aria-hidden="true"
+  >
+    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.198.198-.298.298-.497.099-.198.05-.372-.025-.521-.075-.149-.669-1.611-.916-2.206-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.075-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.095 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982 1-3.648-.235-.374a9.86 9.86 0 01-1.511-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.886 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.89c0 2.096.547 4.142 1.588 5.945L.057 24l6.304-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.478-8.413"/>
+  </svg>
+</a>
 
     </main>
   );
