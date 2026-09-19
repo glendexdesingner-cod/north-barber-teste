@@ -599,8 +599,6 @@ const previousGallery = () => {
 
   </div>
 </section>
-
-```tsx
 {/* =====================================================
     02 — SERVIÇOS
 ===================================================== */}
@@ -1195,7 +1193,6 @@ const previousGallery = () => {
       </div>
 
       <span className="hidden text-4xl leading-none md:block">
-        “
       </span>
 
     </div>
@@ -1207,7 +1204,6 @@ const previousGallery = () => {
       <div className="border-b border-black/10 py-7 md:border-b-0 md:border-r md:px-7 md:first:pl-0">
 
         <p className="text-3xl leading-none">
-          “
         </p>
 
         <p className="mt-3 text-base font-semibold leading-7">
@@ -1226,7 +1222,6 @@ const previousGallery = () => {
       <div className="border-b border-black/10 py-7 md:border-b-0 md:border-r md:px-7">
 
         <p className="text-3xl leading-none">
-          “
         </p>
 
         <p className="mt-3 text-base font-semibold leading-7">
