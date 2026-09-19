@@ -702,33 +702,33 @@ const previousGallery = () => {
                 }`}
               >
 
-                <div className="flex items-center gap-3">
+               <div className="flex min-w-0 items-center gap-2">
 
-                  <span
-                    className={`text-[9px] font-bold ${
-                      isSelected
-                        ? "text-white/60"
-                        : "text-black/20"
-                    }`}
-                  >
-                    {String(index + 1).padStart(2, "0")}
-                  </span>
+  <span
+    className={`shrink-0 text-[9px] font-bold ${
+      isSelected
+        ? "text-white/60"
+        : "text-black/20"
+    }`}
+  >
+    {String(index + 1).padStart(2, "0")}
+  </span>
 
-                  <span className="text-sm font-bold uppercase tracking-wide">
-                    {service.name}
-                  </span>
+  <span className="min-w-0 truncate text-[11px] font-bold uppercase tracking-[0.04em] sm:text-sm sm:tracking-wide">
+    {service.name}
+  </span>
 
-                </div>
+</div>
 
-                <span
-                  className={`shrink-0 text-sm font-black tracking-tight ${
-                    isSelected
-                      ? "text-white"
-                      : "text-black"
-                  }`}
-                >
-                  {service.price}
-                </span>
+<span
+  className={`shrink-0 whitespace-nowrap text-[11px] font-black tracking-tight sm:text-sm ${
+    isSelected
+      ? "text-white"
+      : "text-black"
+  }`}
+>
+  {service.price}
+</span>
 
               </button>
             );
@@ -742,26 +742,26 @@ const previousGallery = () => {
     </div>
 
     {/* RODAPÉ DA SEÇÃO */}
-    <div className="mt-5 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+<div className="mt-5 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
 
-      <p className="text-[9px] font-bold uppercase tracking-[0.25em] text-black/25">
-        Atendimento com hora marcada
-      </p>
+  <p className="text-[9px] font-bold uppercase tracking-[0.25em] text-black/25">
+    Atendimento com hora marcada
+  </p>
 
-      <a
-        href={bookingUrl}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="group inline-flex items-center gap-3 text-[10px] font-bold uppercase tracking-[0.2em] text-black"
-      >
-        Agendar pelo WhatsApp
+  <a
+    href={bookingUrl}
+    target="_blank"
+    rel="noopener noreferrer"
+    className="group inline-flex w-fit items-center gap-3 rounded-full border border-black/15 bg-white/70 px-5 py-3 text-[10px] font-bold uppercase tracking-[0.2em] text-black shadow-sm transition-all duration-300 hover:border-[#dc2626] hover:bg-black hover:text-white hover:shadow-md"
+  >
+    <span>Agendar pelo WhatsApp</span>
 
-        <span className="text-[#dc2626] transition-transform duration-300 group-hover:translate-x-1">
-        </span>
-      </a>
+    <span className="flex h-5 w-5 items-center justify-center rounded-full bg-[#dc2626] text-white transition-transform duration-300 group-hover:translate-x-1">
+      →
+    </span>
+  </a>
 
-    </div>
-
+</div>
   </div>
 
 </section>
@@ -929,7 +929,7 @@ const previousGallery = () => {
     <div className="mt-6 flex items-center justify-between gap-4">
 
       {/* INDICADORES */}
-      <div className="flex min-w-0 flex-1 items-center gap-2 overflow-x-auto scrollbar-hide">
+      <div className="hidden min-w-0 flex-1 items-center gap-2 overflow-x-auto scrollbar-hide md:flex">
 
         {gallery.map((item, index) => (
 
