@@ -450,7 +450,7 @@ const previousGallery = () => {
     setHeroMouse({ x, y });
   }}
   onMouseLeave={() => setHeroMouse({ x: 0, y: 0 })}
-  className="relative flex min-h-[100dvh] items-end overflow-hidden bg-black md:min-h-[92dvh]"
+  className="relative flex min-h-[100svh] items-end overflow-hidden bg-black md:min-h-[92dvh]"
 >
   {/* IMAGEM DO HERO */}
   <div className="absolute inset-0">
@@ -599,18 +599,20 @@ const previousGallery = () => {
 
   </div>
 </section>
+
+```tsx
 {/* =====================================================
     02 — SERVIÇOS
 ===================================================== */}
 
 <section
   id="servicos"
-  className="bg-white px-5 py-20 md:px-10 md:py-28"
+  className="bg-white px-5 py-8 md:px-10 md:py-28"
 >
   <div className="mx-auto max-w-[1600px]">
 
     {/* CABEÇALHO */}
-    <div className="mb-12 flex flex-col gap-6 md:mb-16 md:flex-row md:items-end md:justify-between">
+    <div className="mb-6 flex flex-col gap-4 md:mb-16 md:flex-row md:items-end md:justify-between">
 
       <div>
         <p className="text-[10px] font-bold uppercase tracking-[0.3em] text-[#dc2626]">
@@ -631,7 +633,7 @@ const previousGallery = () => {
     {/* CATEGORIAS */}
     <div className="border-t border-black/10">
 
-      <div className="flex gap-7 overflow-x-auto py-5 md:gap-10">
+      <div className="flex gap-7 overflow-x-auto py-3 md:gap-10 md:py-5">
 
         {serviceGroups.map((group, index) => (
 
@@ -660,80 +662,80 @@ const previousGallery = () => {
 
     {/* CONTEÚDO */}
     <div
-  key={activeService}
-  className="grid animate-[heroText_0.45s_ease-out_both] border-t border-black/10 md:grid-cols-[0.65fr_1.35fr]"
->
+      key={activeService}
+      className="grid animate-[heroText_0.45s_ease-out_both] border-t border-black/10 md:grid-cols-[0.65fr_1.35fr]"
+    >
 
       {/* INTRODUÇÃO */}
-      <div className="py-10 md:border-r md:border-black/10 md:py-12 md:pr-14">
+      <div className="py-5 md:border-r md:border-black/10 md:py-12 md:pr-14">
 
         <p className="text-[9px] font-bold uppercase tracking-[0.25em] text-black/25">
           0{activeService + 1}
         </p>
 
-        <h3 className="mt-3 text-3xl font-black uppercase tracking-[-0.05em] md:text-4xl">
+        <h3 className="mt-2 text-3xl font-black uppercase tracking-[-0.05em] md:mt-3 md:text-4xl">
           {serviceGroups[activeService].title}
         </h3>
 
-        <p className="mt-4 max-w-xs text-sm leading-6 text-black/45">
+        <p className="mt-2 max-w-xs text-sm leading-6 text-black/45 md:mt-4">
           {serviceGroups[activeService].description}
         </p>
 
       </div>
 
       {/* SERVIÇOS */}
-      <div className="py-10 md:py-12 md:pl-14">
+      <div className="py-5 md:py-12 md:pl-14">
 
-        <div className="grid gap-3 sm:grid-cols-2">
+        <div className="grid grid-cols-2 gap-2">
 
           {serviceGroups[activeService].services.map((service, index) => {
 
-              const isSelected = selectedServices.includes(service.name);
+            const isSelected = selectedServices.includes(service.name);
 
-              return (
-                <button
-                  key={service.name}
-                  type="button"
-                  onClick={() => toggleService(service.name)}
-                  className={`group flex items-center justify-between gap-4 border px-5 py-5 text-left transition-all duration-300 ${
-                    isSelected
-                      ? "border-[#dc2626] bg-[#dc2626] text-white"
-                      : "border-black/10 bg-white text-black hover:border-black/30"
-                  }`}
-                >
+            return (
+              <button
+                key={service.name}
+                type="button"
+                onClick={() => toggleService(service.name)}
+                className={`group flex items-center justify-between gap-4 border px-4 py-3 text-left transition-all duration-300 ${
+                  isSelected
+                    ? "border-[#dc2626] bg-[#dc2626] text-white"
+                    : "border-black/10 bg-white text-black hover:border-black/30"
+                }`}
+              >
 
-                  <div className="flex items-center gap-4">
-
-                    <span
-                      className={`text-[9px] font-bold ${
-                        isSelected
-                          ? "text-white/60"
-                          : "text-black/20"
-                      }`}
-                    >
-                      {String(index + 1).padStart(2, "0")}
-                    </span>
-
-                    <span className="text-sm font-bold uppercase tracking-wide">
-                      {service.name}
-                    </span>
-
-                  </div>
+                <div className="flex items-center gap-3">
 
                   <span
-                    className={`shrink-0 text-sm font-black tracking-tight ${
+                    className={`text-[9px] font-bold ${
                       isSelected
-                        ? "text-white"
-                        : "text-black"
+                        ? "text-white/60"
+                        : "text-black/20"
                     }`}
                   >
-                    {service.price}
+                    {String(index + 1).padStart(2, "0")}
                   </span>
 
-                </button>
-              );
+                  <span className="text-sm font-bold uppercase tracking-wide">
+                    {service.name}
+                  </span>
 
-            })}
+                </div>
+
+                <span
+                  className={`shrink-0 text-sm font-black tracking-tight ${
+                    isSelected
+                      ? "text-white"
+                      : "text-black"
+                  }`}
+                >
+                  {service.price}
+                </span>
+
+              </button>
+            );
+
+          })}
 
         </div>
 
@@ -742,29 +744,30 @@ const previousGallery = () => {
     </div>
 
     {/* RODAPÉ DA SEÇÃO */}
-<div className="mt-8 flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
+    <div className="mt-5 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
 
-  <p className="text-[9px] font-bold uppercase tracking-[0.25em] text-black/25">
-    Atendimento com hora marcada
-  </p>
+      <p className="text-[9px] font-bold uppercase tracking-[0.25em] text-black/25">
+        Atendimento com hora marcada
+      </p>
 
-  <a
-    href={bookingUrl}
-    target="_blank"
-    rel="noopener noreferrer"
-    className="group inline-flex items-center gap-3 text-[10px] font-bold uppercase tracking-[0.2em] text-black"
-  >
-    Agendar pelo WhatsApp
+      <a
+        href={bookingUrl}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="group inline-flex items-center gap-3 text-[10px] font-bold uppercase tracking-[0.2em] text-black"
+      >
+        Agendar pelo WhatsApp
 
-    <span className="text-[#dc2626] transition-transform duration-300 group-hover:translate-x-1">
-      
-    </span>
-  </a>
+        <span className="text-[#dc2626] transition-transform duration-300 group-hover:translate-x-1">
+        </span>
+      </a>
 
-</div>
+    </div>
 
   </div>
+
 </section>
+
 
 {/* =====================================================
           03 — GALERIA
