@@ -450,7 +450,7 @@ const previousGallery = () => {
     setHeroMouse({ x, y });
   }}
   onMouseLeave={() => setHeroMouse({ x: 0, y: 0 })}
-  className="relative flex min-h-screen items-end overflow-hidden bg-black md:min-h-[92dvh]"
+  className="relative flex min-h-[100dvh] items-end overflow-hidden bg-black md:min-h-[92dvh]"
 >
   {/* IMAGEM DO HERO */}
   <div className="absolute inset-0">
