@@ -684,7 +684,7 @@ const previousGallery = () => {
       {/* SERVIÇOS */}
       <div className="py-5 md:py-12 md:pl-14">
 
-        <div className="grid grid-cols-2 gap-2">
+        <div className="grid grid-cols-1 gap-2 md:grid-cols-2">
 
           {serviceGroups[activeService].services.map((service, index) => {
 
